@@ -8,6 +8,7 @@ const Pool = require("pg").Pool;
 //   port: 5432,
 // });
 const connectionString =
+  process.env.DATABASE_URL ||
   "postgres://bjmcwdul:sWzT9lzGeqcoVyElAC9l35KQIhYjwFzR@rosie.db.elephantsql.com/bjmcwdul";
 const pool = new Pool({ connectionString });
 
