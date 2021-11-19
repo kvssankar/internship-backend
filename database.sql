@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS "keywords" (
 "Index" INT NULL,
-"Keyword" TEXT NULL,
+"keyword" TEXT NULL,
 "Country" TEXT NULL,
 "Difficulty" TEXT NULL,
 "Volume" TEXT NULL,

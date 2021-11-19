@@ -14,7 +14,7 @@ app.get("/", async (req, res) => {
       partialSearchQuery.qarr
     );
     var result2 = await pool.query(
-      "select keyword from keywords where keyword like $1",
+      "select keyword from keywords where lower(keyword) like lower($1)",
       ["%" + searchtext + "%"]
     );
     result1.rows = result1.rows.map(function (item) {
