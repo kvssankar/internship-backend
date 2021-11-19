@@ -11,4 +11,12 @@ const partialSearch = (searchtext) => {
   return { qstr, qarr };
 };
 
-module.exports = { partialSearch };
+const checkSearchString = (searchtext) => {
+  if (searchtext == "" || searchtext == null || searchtext == undefined) {
+    return { status: 0, message: "Search string is empty" };
+  } else {
+    return { status: 1, message: "Search string is valid" };
+  }
+};
+
+module.exports = { partialSearch, checkSearchString };
