@@ -35,18 +35,29 @@ app.get("/", async (req, res) => {
       });
     }
 
-    //getting partial search query
+    //getting search query
     var partialSearchQuery = partialSearch(searchtext);
+    var fullSeacrhQuery =
+      "select keyword from keywords where lower(keyword) like lower($1)";
+
+    //get for page pageSize,page
+    var page = +req.query.page;
+    var pageSize = +req.query.pageSize || 20;
+
+    if (page) {
+      partialSearchQuery.qstr +=
+        " limit " + pageSize + " offset " + (page - 1) * pageSize;
+      fullSeacrhQuery +=
+        " limit " + pageSize + " offset " + (page - 1) * pageSize;
+    }
+
     var result1 = await pool.query(
       partialSearchQuery.qstr,
       partialSearchQuery.qarr
     );
 
     //getting full search query
-    var result2 = await pool.query(
-      "select keyword from keywords where lower(keyword) like lower($1)",
-      ["%" + searchtext + "%"]
-    );
+    var result2 = await pool.query(fullSeacrhQuery, ["%" + searchtext + "%"]);
 
     //coverting the result to array of string
     result1.rows = result1.rows.map(function (item) {
