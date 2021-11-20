@@ -12,6 +12,7 @@
 2. Added paging feature
 3. Deployed in Heroku, AWS using docker
 4. Partial match doesn't contain full matched strings
+5. Configured cors to work anywhere
 
 ## Response object
     {"Complete match":[....],"Partial match":[....]} 
