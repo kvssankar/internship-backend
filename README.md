@@ -14,6 +14,8 @@
 4. Partial match doesn't contain full matched strings
 5. Configured cors to work anywhere
 
+> Note: Check database.sql for database creation
+
 ## Response object
     {"Complete match":[....],"Partial match":[....]} 
 
