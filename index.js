@@ -70,6 +70,7 @@ app.get("/", async (req, res) => {
     //sending the result
     res.json({ "Complete match": result2.rows, "Partial match": result1.rows });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err || "Something went wrong" });
   }
 });

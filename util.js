@@ -8,6 +8,11 @@ const partialSearch = (searchtext) => {
   for (var i = 2; i <= arr.length; i++) {
     qstr += " or keyword like $" + i;
   }
+  qstr +=
+    " except select keyword from keywords where lower(keyword) like lower($" +
+    (arr.length + 1) +
+    ")";
+  qarr.push("%" + searchtext + "%");
   return { qstr, qarr };
 };
 
