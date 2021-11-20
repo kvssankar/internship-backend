@@ -1,3 +1,7 @@
+CREATE DATABASE internship;
+
+\c internship;
+
 CREATE TABLE IF NOT EXISTS "keywords" (
 "Index" INT NULL,
 "keyword" TEXT NULL,

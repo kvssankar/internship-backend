@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app:
+    container_name: docker-node-postgres
+    restart: always
+    build: .
+    ports:
+      - '80:80'
+    external_links:
+      - postgres-db
+  postgres-db:
+    container_name: postgres-db
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: sankarvishnu23
+    ports:
+      - '5432:5432'
