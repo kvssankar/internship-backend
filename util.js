@@ -1,3 +1,16 @@
+const fullSearch = (searchtext) => {
+  var arr = searchtext.split(" ");
+  var qarr = [];
+  var qstr = "select keyword from keywords where keyword like $1";
+  for (var i = 0; i < arr.length; i++) {
+    qarr.push("%" + arr[i] + "%");
+  }
+  for (var i = 2; i <= arr.length; i++) {
+    qstr += " and keyword like $" + i;
+  }
+  return { qstr, qarr };
+};
+
 const partialSearch = (searchtext) => {
   var arr = searchtext.split(" ");
   var qarr = [];
@@ -8,6 +21,7 @@ const partialSearch = (searchtext) => {
   for (var i = 2; i <= arr.length; i++) {
     qstr += " or keyword like $" + i;
   }
+  qstr += " except " + fullSearch(searchtext).qstr;
   return { qstr, qarr };
 };
 
@@ -19,4 +33,4 @@ const checkSearchString = (searchtext) => {
   }
 };
 
-module.exports = { partialSearch, checkSearchString };
+module.exports = { partialSearch, checkSearchString, fullSearch };

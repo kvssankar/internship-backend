@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const pool = require("./db.js");
 
-const { partialSearch, checkSearchString } = require("./util.js");
+const { partialSearch, checkSearchString, fullSearch } = require("./util.js");
 
 app.use(express.json());
 
@@ -35,18 +35,29 @@ app.get("/", async (req, res) => {
       });
     }
 
-    //getting partial search query
+    //getting search query
     var partialSearchQuery = partialSearch(searchtext);
+    var fullSeacrhQuery = fullSearch(searchtext);
+
+    //get for page pageSize,page
+    var page = +req.query.page;
+    var pageSize = +req.query.pageSize || 20;
+
+    if (page) {
+      partialSearchQuery.qstr +=
+        " limit " + pageSize + " offset " + (page - 1) * pageSize;
+      fullSeacrhQuery.qstr +=
+        " limit " + pageSize + " offset " + (page - 1) * pageSize;
+    }
+
+    //get partial search query
     var result1 = await pool.query(
       partialSearchQuery.qstr,
       partialSearchQuery.qarr
     );
 
     //getting full search query
-    var result2 = await pool.query(
-      "select keyword from keywords where lower(keyword) like lower($1)",
-      ["%" + searchtext + "%"]
-    );
+    var result2 = await pool.query(fullSeacrhQuery.qstr, fullSeacrhQuery.qarr);
 
     //coverting the result to array of string
     result1.rows = result1.rows.map(function (item) {
@@ -59,6 +70,7 @@ app.get("/", async (req, res) => {
     //sending the result
     res.json({ "Complete match": result2.rows, "Partial match": result1.rows });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err || "Something went wrong" });
   }
 });
