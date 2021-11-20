@@ -11,6 +11,7 @@
 1. Made the search case-insensitive 
 2. Added paging feature
 3. Deployed in Heroku, AWS using docker
+4. Partial match doesn't contain full matched strings
 
 ## Response object
     {"Complete match":[....],"Partial match":[....]} 
