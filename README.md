@@ -7,6 +7,9 @@
 4. AWS
 5. Docker
 
+
+> Note: Check database.sql for database creation
+
 ## Points to be noted:
 1. Made the search case-insensitive 
 2. Added paging feature
@@ -14,7 +17,6 @@
 4. Partial match doesn't contain full matched strings
 5. Configured cors to work anywhere
 
-> Note: Check database.sql for database creation
 
 ## Response object
     {"Complete match":[....],"Partial match":[....]} 
