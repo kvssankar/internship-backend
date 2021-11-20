@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const pool = require("./db.js");
 
-const { partialSearch, checkSearchString } = require("./util.js");
+const { partialSearch, checkSearchString, fullSearch } = require("./util.js");
 
 app.use(express.json());
 
@@ -37,8 +37,7 @@ app.get("/", async (req, res) => {
 
     //getting search query
     var partialSearchQuery = partialSearch(searchtext);
-    var fullSeacrhQuery =
-      "select keyword from keywords where lower(keyword) like lower($1)";
+    var fullSeacrhQuery = fullSearch(searchtext);
 
     //get for page pageSize,page
     var page = +req.query.page;
@@ -47,17 +46,18 @@ app.get("/", async (req, res) => {
     if (page) {
       partialSearchQuery.qstr +=
         " limit " + pageSize + " offset " + (page - 1) * pageSize;
-      fullSeacrhQuery +=
+      fullSeacrhQuery.qstr +=
         " limit " + pageSize + " offset " + (page - 1) * pageSize;
     }
 
+    //get partial search query
     var result1 = await pool.query(
       partialSearchQuery.qstr,
       partialSearchQuery.qarr
     );
 
     //getting full search query
-    var result2 = await pool.query(fullSeacrhQuery, ["%" + searchtext + "%"]);
+    var result2 = await pool.query(fullSeacrhQuery.qstr, fullSeacrhQuery.qarr);
 
     //coverting the result to array of string
     result1.rows = result1.rows.map(function (item) {
